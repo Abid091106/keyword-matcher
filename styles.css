@@ -1,6 +1,4 @@
-/* the asterisk(*) means "every element" 
-and border-box tells the browser to fit the padding and border inside the width/height
-instead of adding them on. */
+/* Every element: padding and border fit inside the set width/height instead of adding to it */
 * {
   box-sizing: border-box;
 }
@@ -17,17 +15,14 @@ h1, h2 {
     text-align: center;
 }
 
-/* width is in percentage, and it is gives textarea the % width of the box it is
-currently within. So if textarea is present inside body, then 100% would mean the same
-width as the body box.*/
+/* 100% = the full width of the element it sits inside */
 textarea {
   width: 100%;
   height: 150px;
   padding: 10px;
 }
 
-/* cursor controls what your mouse pointer looks like when it's hovering over that element.
-pointer is one of its values. It's the hand with a pointing finger you see when you hover over a link.*/
+/* cursor: pointer shows the pointing hand on hover, so it looks clickable */
 button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -35,35 +30,28 @@ button {
   cursor: pointer;
 }
 
+/* Makes "\n" in the results message show as a real line break */
 #feedback{
-    /*allows for the "\n" to be recognised in this elements textContent property, and creates a new line
-    instead of treating it as part of the string. i used it to output the results in the feedback paragraph
-    and wanted to create a new line, but without this the "\n" was just treated as a space in the output message*/
     white-space: pre-line;
 }
 
-/*the description for each of the properties can be obtained from the claude chat
-"building an AI cv reviewer" but scroll down a bit as the chat is long*/
 #warning {
-    /* Size */
     width: 400px;
     height: 150px;
 
-    /* Centre it in the middle of the screen */
+    /* Centre on screen: move the top-left corner to the middle, then shift back by half the box's own size */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    /* Centre the text inside the box. overflow-wrap: break-word wraps text to newlines if too long unless display: flex
-    if display: flex; then do overflow-wrap: anywhere;*/
+    /* Centre the text inside the box. With flex, overflow-wrap needs "anywhere" (not "break-word") to wrap long words */
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     overflow-wrap: anywhere;
 
-    /* Look */
     font-family: Arial, sans-serif;
     font-size: 24px;
     color: black;
@@ -74,14 +62,15 @@ button {
     border-style: solid;
     border-color: black;
 
-    /* Hidden by default */
+    /* Hidden by default; pointer-events: none lets clicks pass through the invisible box */
     opacity: 0;
     pointer-events: none;
 
-    /* Smooth fade in and out */
+    /* Kept here (not in .show) so it fades smoothly both in and out */
     transition: opacity 0.5s;
 }
 
+/* JavaScript adds/removes this class to show/hide the warning */
 #warning.show {
     opacity: 1;
 }
