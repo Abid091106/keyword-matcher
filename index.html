@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Keyword Matcher</title>
         <link rel="stylesheet" href="styles.css">
-        
+        <script src="script.js"></script>
+
+        <!-- charset makes sure characters like £, é, or curly quotes display correctly instead of as garbled symbols.
+        viewport makes the page display at the right size on phones. Without it, mobile browsers show a zoomed-out desktop version. -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
 
     <body>
-        <h1>Keyword Matcher</h1>
 
-        <h2>Resume</h2>
-        <textarea id="resume" placeholder="Enter your resume here"></textarea>
+        <main>
+            <section>
+                <h1>Keyword Matcher</h1>
 
-        <h2>Job Description</h2>
-        <textarea id="job desc" placeholder="Enter your job description here"></textarea>
+                <h2>Resume</h2>
+                <textarea id="resume" placeholder="Enter your resume here"></textarea>
 
-        <button id="button">Check</button>
+                <h2>Job Description</h2>
+                <textarea id="job-desc" placeholder="Enter your job description here"></textarea>
+
+                <button id="check">Check</button>
+                <p id="feedback"></p>
+            </section>
+
+            <!-- role="alert" announces the message out loud when it happens-->
+            <div id="warning" role="alert" class=""></div>
+
+        </main>
+        
     </body>
 </html>

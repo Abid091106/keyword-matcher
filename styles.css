@@ -1,5 +1,5 @@
-/** means "every element" 
-and border-box tells the browser to fit the padding and border inside the width 
+/* the asterisk(*) means "every element" 
+and border-box tells the browser to fit the padding and border inside the width/height
 instead of adding them on. */
 * {
   box-sizing: border-box;
@@ -33,4 +33,55 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+}
+
+#feedback{
+    /*allows for the "\n" to be recognised in this elements textContent property, and creates a new line
+    instead of treating it as part of the string. i used it to output the results in the feedback paragraph
+    and wanted to create a new line, but without this the "\n" was just treated as a space in the output message*/
+    white-space: pre-line;
+}
+
+/*the description for each of the properties can be obtained from the claude chat
+"building an AI cv reviewer" but scroll down a bit as the chat is long*/
+#warning {
+    /* Size */
+    width: 400px;
+    height: 150px;
+
+    /* Centre it in the middle of the screen */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Centre the text inside the box. overflow-wrap: break-word wraps text to newlines if too long unless display: flex
+    if display: flex; then do overflow-wrap: anywhere;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-wrap: anywhere;
+
+    /* Look */
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: black;
+    background-color: bisque;
+    padding: 20px;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+
+    /* Smooth fade in and out */
+    transition: opacity 0.5s;
+}
+
+#warning.show {
+    opacity: 1;
 }
