@@ -3,7 +3,7 @@ function cleanWords(text){
 
     // Lowercase so "Python" and "python" count as the same word
     let lowerText = text.toLowerCase();
-
+    
     // Remove anything that isn't a letter, digit, whitespace or "+" (keeps words like "c++")
     let cleanedText = lowerText.replace(/[^a-z0-9\s+]/g, "");
 
@@ -50,13 +50,22 @@ function checkForMatches(keywordSet, inputSet){
 
 document.addEventListener("DOMContentLoaded", function(){
 
-    document.querySelector("#check").addEventListener("click", function() {
-        let resumeText = document.querySelector("#resume").value.trim();
-        let jobDescText = document.querySelector("#job-desc").value.trim();
-        let warning = document.getElementById("warning");
+    // Get feedback, progess ring, score percentage, and warning button items
+    const feedback = document.querySelector('#feedback');
+    const progressRing = document.querySelector("#progress");
+    const score = document.querySelector("#percentage-score");
+    const warning = document.getElementById("warning");
 
+    // Must match the circle's radius (r="50" in the HTML and the calc() in the CSS)
+    const circumference = Math.PI*2*50;
+    
+    document.querySelector("#check").addEventListener("click", function() {
+        //Grab the inputs from the user, and remove whitespace from front/back of the text
+        const resumeText = document.querySelector("#resume").value.trim();
+        const jobDescText = document.querySelector("#job-desc").value.trim();
+        
         // If either box is empty, show the warning and skip the matching
-        if (resumeText.length == 0 || jobDescText.length == 0){
+        if (resumeText.length === 0 || jobDescText.length === 0){
             
             // Only show the warning if it isn't already active (its text is cleared once it has fully faded out)
             if (warning.textContent === ""){
@@ -78,14 +87,35 @@ document.addEventListener("DOMContentLoaded", function(){
 
         const keywords = removeFillerWords(cleanWords(jobDescText));
         const resumeWords = new Set(cleanWords(resumeText));
-
         const result = checkForMatches(keywords, resumeWords);
+        const fraction = result.matches.length/keywords.size;
 
-        let feedback = document.querySelector('#feedback');
+        if (keywords.size === 0){
+            feedback.textContent = "You have 0 keywords in your job description.";
+            score.textContent = "N/A";
+            score.style.fill = "grey";
+            progressRing.style.strokeDashoffset = circumference;
+            return;
+        }
 
-        // Template literal (backticks) puts variables inside the string, like Python f-strings
-        feedback.textContent = `You have ${result.matches.length} keyword matches out of a total ${keywords.size}.\nYou were missing the following words: ${result.missing.join(", ")}.`;
+        else if (keywords.size === result.matches.length){
+            feedback.textContent = "Congrats on matching all keywords in the job description!!";
+            progressRing.style.strokeDashoffset = 0;
+            progressRing.style.stroke = "hsl(120, 100%, 50%)";
+        }
         
+        else {
+            // Template literal (backticks) puts variables inside the string, like Python f-strings
+            feedback.textContent = `You have ${result.matches.length} keyword matches out of a total ${keywords.size}.\nYou were missing the following words: ${result.missing.join(", ")}.`;
+            // Offset = the part of the ring left empty
+            progressRing.style.strokeDashoffset = circumference*(1-fraction);
+            // Hue goes from 0 (red) to 120 (green) as the match fraction goes from 0 to 1
+            progressRing.style.stroke = `hsl(${fraction*120}, 100%, 50%)`;
+        }
+        
+        // Show the percentage in the middle of the ring, in a matching (darker) colour
+        score.textContent = `${Math.round(fraction*100)}%`;
+        score.style.fill = `hsl(${fraction*120}, 100%, 35%)`;
     });
     
     

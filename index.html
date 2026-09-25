@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Keyword Matcher</title>
-        <link rel="stylesheet" href="styles.css">
-        <script src="script.js"></script>
-
         <!-- charset: displays symbols like £ and é correctly. viewport: sizes the page properly on phones -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Keyword Matcher</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
     </head>
 
     <body>
 
         <main>
-            <section>
+            <section class="keyword-checker">
                 <h1>Keyword Matcher</h1>
 
-                <h2>Resume</h2>
-                <textarea id="resume" placeholder="Enter your resume here"></textarea>
-
-                <h2>Job Description</h2>
-                <textarea id="job-desc" placeholder="Enter your job description here"></textarea>
-
+                <div class="inputs">
+                    <div class="input-group">
+                        <h2>Resume</h2>
+                        <textarea id="resume" placeholder="Enter your resume here"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <h2>Job Description</h2>
+                        <textarea id="job-desc" placeholder="Enter your job description here"></textarea>  
+                    </div>
+                </div>
+                
                 <button id="check">Check</button>
                 <p id="feedback"></p>
+
+                <!--Adding aria-hidden="true" to the <svg> tells screen readers to skip it-->
+                <svg class="score-ring" aria-hidden="true">
+                    <circle id="track" cx="60" cy="60" r="50"></circle>
+                    <circle id="progress" cx="60" cy="60" r="50"></circle>
+                    <text id="percentage-score" x="60" y="60">0%</text>
+                </svg>
+
+                <!-- Empty until JavaScript fills it; role="alert" makes screen readers announce the message -->
+                <div id="warning" role="alert" class=""></div>
+
             </section>
 
-            <!-- Empty until JavaScript fills it; role="alert" makes screen readers announce the message -->
-            <div id="warning" role="alert" class=""></div>
-
+            
         </main>
         
     </body>

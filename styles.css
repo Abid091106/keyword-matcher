@@ -3,6 +3,11 @@
   box-sizing: border-box;
 }
 
+main {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #ffb8c2;
@@ -15,11 +20,22 @@ h1, h2 {
     text-align: center;
 }
 
-/* 100% = the full width of the element it sits inside */
+.inputs {
+    display: flex;
+    gap: 20px;   
+}
+
+.input-group {
+    /*shares the spacing of screen between the elements with this class as a ratio. So since flex would be the same for all elements under this class, they all share the space equally*/
+    flex: 1;
+}
+
+/* 100% = the full width of the element it sits inside, and it resizes to fit within its parent element */
 textarea {
   width: 100%;
   height: 150px;
   padding: 10px;
+  resize: vertical;
 }
 
 /* cursor: pointer shows the pointing hand on hover, so it looks clickable */
@@ -30,9 +46,42 @@ button {
   cursor: pointer;
 }
 
-/* Makes "\n" in the results message show as a real line break */
-#feedback{
-    white-space: pre-line;
+/* Rotated so the ring starts filling from 12 o'clock instead of 3 o'clock */
+.score-ring {
+    width: 120px; 
+    height: 120px;
+    transform: rotate(-90deg); 
+}
+
+#track {
+    fill:none; 
+    stroke:lightgrey; 
+    stroke-width:10px;
+}
+
+/* dasharray = one dash as long as the whole ring (the circumference, radius 50).
+   dashoffset = how much of that dash is hidden; starting at the full circumference means an empty ring. */
+#progress {
+    fill:none; 
+    stroke:black; 
+    stroke-width:10px;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s, stroke 1s;
+    stroke-dasharray: calc(pi*2*50px);
+    stroke-dashoffset: calc(pi*2*50px);
+}
+
+#percentage-score {
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    /* SVG text uses fill for its colour, not color */
+    fill: hsl(0, 60%, 50%);
+    /* Undo the ring's -90deg rotation, pivoting around the ring's centre */
+    transform: rotate(90deg);
+    transform-origin: 60px 60px;
+    /* Centre the text on its x/y point */
+    text-anchor: middle;
+    dominant-baseline: middle;
 }
 
 #warning {
@@ -73,4 +122,17 @@ button {
 /* JavaScript adds/removes this class to show/hide the warning */
 #warning.show {
     opacity: 1;
+}
+
+/* Makes "\n" in the results message show as a real line break */
+#feedback{
+    white-space: pre-line;
+}
+
+
+@media (max-width: 700px) {
+    .inputs {
+        /*changes the boxes to be layed out on top of each other again if screen is too narrow*/
+        flex-direction: column;
+    }
 }
