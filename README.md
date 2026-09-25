@@ -1,26 +1,32 @@
 # Keyword Matcher
 
-A simple web app that compares a resume against a job description and shows which keywords from the job description appear in the resume, and which are missing. A small starting project, just to explore and learn how these languages interact within an app/web page.
+A web app that compares a resume against a job description, shows how many of the job's keywords appear in the resume, and lists the ones that are missing.
+
+**Live demo:** https://abid091106.github.io/keyword-matcher/
+
+![Screenshot of the Keyword Matcher](screenshot.png)
 
 ## Features
 
-- Paste in a resume and a job description, then click **Check**
-- Shows how many of the job description's keywords appear in the resume
-- Lists the keywords that are missing, so you know what to add
+- Paste a resume and a job description side by side, then click **Check**
+- An animated score ring fills up to your match percentage, shifting from red through yellow to green as the score rises
+- Shows how many keywords matched, and lists the missing ones so you know what to add
 - Ignores common filler words like "the", "and" and "with"
-- Shows a warning pop-up if either box is left empty
+- Handles edge cases: a warning pop-up for empty boxes, and clear messages when the job description has no keywords or every keyword matches
+- Responsive layout: the boxes sit side by side on wide screens and stack on phones
 
 ## How it works
 
-1. **Cleaning the text:** both texts are converted to lowercase, punctuation is removed (except `+`, so terms like "C++" survive), and the text is split into individual words.
-2. **Finding keywords:** filler words are removed from the job description, and the remaining words are stored in a `Set`, which removes duplicates automatically.
-3. **Matching:** each keyword is checked against the resume's words, which are also stored in a `Set`. Sets make each lookup fast, instead of scanning through a whole list every time.
-4. **Results:** the number of matches and the list of missing keywords are displayed on the page.
+1. **Cleaning the text:** both texts are lowercased, punctuation is removed (except `+`, so terms like "C++" survive), and the text is split into words.
+2. **Finding keywords:** filler words are removed from the job description, and the rest are stored in a `Set`, which removes duplicates automatically.
+3. **Matching:** each keyword is checked against the resume's words, also stored in a `Set`. Set lookups are O(1) on average, compared with O(n) for searching an array, so the whole check runs in linear time.
+4. **The score ring:** the ring is an SVG circle whose outline is one long dash, set with `stroke-dasharray`. `stroke-dashoffset` hides part of that dash, so the offset is calculated as `circumference × (1 − match fraction)`, and a CSS transition animates it.
+5. **The colour:** the ring uses HSL colours, where the hue is `match fraction × 120`. This maps 0% to red (hue 0), 50% to yellow (hue 60), and 100% to green (hue 120).
 
 ## Built with
 
 - HTML
-- CSS
+- CSS (flexbox, media queries, SVG styling and transitions)
 - JavaScript (no frameworks or libraries)
 
 ## Running it locally
@@ -39,23 +45,24 @@ No installation or setup needed.
 - **Word variations** such as "manage", "managed" and "management" are treated as different words.
 - **Synonyms and abbreviations** aren't recognised, so "JS" won't match "JavaScript".
 - **Punctuation inside words** is removed, so "Node.js" becomes "nodejs".
-- The **filler word list** is small, so some generic words may still be counted as keywords.
+- Every keyword counts equally, even though some skills matter more than others in a job description.
 
 ## Future improvements
 
-- Recognise common multi-word phrases
-- Add a synonym list (e.g. "JS" → "JavaScript")
-- Handle word endings, so related word forms match
-- Allow uploading a `.txt` resume file
-- Rebuild with Next.js and add AI-powered feedback on weak bullet points
+- Show matched and missing keywords as coloured tags
+- Upload a resume as a `.txt` file
+- Recognise synonyms and common multi-word phrases
+- Add automated tests for the matching functions
+- Rebuild with Next.js and TypeScript, and add AI-powered feedback on weak bullet points
 
 ## What I learned
 
 This was my first project after finishing CS50x. Through it I learned how to:
 
-- Use Git and GitHub from the command line
-- Structure a web page with semantic HTML and style it with CSS
+- Use Git and GitHub from the command line, and deploy a site with GitHub Pages
+- Structure a page with semantic HTML and build a responsive layout with flexbox and media queries
 - Handle user input and update the page with JavaScript
 - Use regular expressions to clean and split text
 - Choose between arrays and Sets based on how the data is used
-- Create smooth CSS transitions and handle timing with `setTimeout`
+- Draw and animate shapes with SVG, and use HSL colours to create smooth colour scales
+- Handle timing with `setTimeout` and prevent bugs from repeated clicks
