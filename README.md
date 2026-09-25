@@ -4,8 +4,6 @@ A web app that compares a resume against a job description, shows how many of th
 
 **Live demo:** https://abid091106.github.io/keyword-matcher/
 
-![Screenshot of the Keyword Matcher](screenshot.png)
-
 ## Features
 
 - Paste a resume and a job description side by side, then click **Check**
