@@ -50,19 +50,45 @@ function checkForMatches(keywordSet, inputSet){
 
 document.addEventListener("DOMContentLoaded", function(){
 
-    // Get feedback, progess ring, score percentage, and warning button items
+    // Get resume textbox, job desc textbox, feedback, progress ring, score percentage, and warning box items
     const feedback = document.querySelector('#feedback');
     const progressRing = document.querySelector("#progress");
     const score = document.querySelector("#percentage-score");
     const warning = document.getElementById("warning");
-
+    const resumeTextarea = document.querySelector("#resume");
+    const jobDescTextarea = document.querySelector("#job-desc");
     // Must match the circle's radius (r="50" in the HTML and the calc() in the CSS)
     const circumference = Math.PI*2*50;
+
+    // Fill the resume box from an uploaded .txt file
+    const resumeFileInput = document.querySelector("#resume-file");
+
+    resumeFileInput.addEventListener("change", async function() {
+        const file = resumeFileInput.files[0];
+
+        // The user clicked Cancel, so there's no file
+        if (!file) {
+            return;
+        }
+
+        // accept=".txt" only filters the picker, so double-check the file type
+        if (!file.name.toLowerCase().endsWith(".txt")) {
+            resumeFileInput.value = "";
+            return;
+        }
+
+        // .text() reads the file in the background; await waits for it to finish
+        const text = await file.text();
+        resumeTextarea.value = text;
+
+        // Reset so choosing the same file again still triggers "change"
+        resumeFileInput.value = "";
+    });
     
     document.querySelector("#check").addEventListener("click", function() {
         //Grab the inputs from the user, and remove whitespace from front/back of the text
-        const resumeText = document.querySelector("#resume").value.trim();
-        const jobDescText = document.querySelector("#job-desc").value.trim();
+        const resumeText = resumeTextarea.value.trim();
+        const jobDescText = jobDescTextarea.value.trim();
         
         // If either box is empty, show the warning and skip the matching
         if (resumeText.length === 0 || jobDescText.length === 0){
